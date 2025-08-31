@@ -11,13 +11,13 @@
 void 
 setup(int64_t N, float A[])
 {
-   printf(" inside sum_vector problem_setup, N=%lld \n", N);
+   printf(" inside sum_vector problem_setup, N=%ld \n", N);
 }
 
 float
 sum(int64_t N, float A[])
 {
-   printf(" inside sum_vector perform_sum, N=%lld \n", N);
+   printf(" inside sum_vector perform_sum, N=%ld \n", N);
 
    return 0;
 }

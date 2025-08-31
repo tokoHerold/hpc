@@ -32,7 +32,7 @@ int main(int argc, char** argv)
    for (int64_t n : problem_sizes) 
    {
       float t;
-      printf("Working on problem size N=%lld \n", n);
+      printf("Working on problem size N=%ld \n", n);
 
       // invoke user code to set up the problem
       setup(n, &A[0]);

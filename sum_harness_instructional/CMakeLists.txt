@@ -6,7 +6,7 @@ project (sum_harness_instructional LANGUAGES CXX)
 
 set(CMAKE_BUILD_TYPE "Release")
 
-#set(CMAKE_CXX_FLAGS "-Wall")  # uncomment this line to turn on compiler warnings
+set(CMAKE_CXX_FLAGS "-Wall")  # uncomment this line to turn on compiler warnings
 
 # info for setting the compiler optimization level
 
