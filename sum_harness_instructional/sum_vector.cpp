@@ -15,6 +15,9 @@ void setup(int64_t N, float A[]) {
     }
 }
 
+/**
+ * @brief Calculates the sum from 0 to N by accumulating the values in A.
+*/  
 float sum(int64_t N, float A[]) {
     float sum = 0;
     for (int i = 0; i < N; ++i) {

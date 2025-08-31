@@ -12,6 +12,10 @@ void setup(int64_t N, float A[]) {
     printf(" inside direct_sum problem_setup, N=%ld \n", N);
 }
 
+
+/**
+ * @brief Calculates the sum from 0 to N directly, i.e., using registers.
+*/  
 float sum(int64_t N, float A[]) {
     // Remove printf statement
     // printf(" inside direct_sum perform_sum, N=%ld \n", N);
