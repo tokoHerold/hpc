@@ -11,42 +11,43 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
-#include <vector>
 #include <string.h>
+#include <vector>
 
 #include "sums.h"
 
 /* The benchmarking program */
-int main(int argc, char** argv) 
-{
-   std::cout << std::fixed << std::setprecision(2);
+int main(int argc, char **argv) {
+    std::cout << std::fixed << std::setprecision(2);
 
-#define MAX_PROBLEM_SIZE 1 << 28  //  256M
-   std::vector<int64_t> problem_sizes{ MAX_PROBLEM_SIZE >> 5, MAX_PROBLEM_SIZE >> 4, MAX_PROBLEM_SIZE >> 3, MAX_PROBLEM_SIZE >> 2, MAX_PROBLEM_SIZE >> 1, MAX_PROBLEM_SIZE};
-   
-   float *A = (float *)malloc(sizeof(float) * MAX_PROBLEM_SIZE);
+#define MAX_PROBLEM_SIZE 1 << 28 //  256M
+    std::vector<int64_t> problem_sizes{
+        MAX_PROBLEM_SIZE >> 5, MAX_PROBLEM_SIZE >> 4, MAX_PROBLEM_SIZE >> 3,
+        MAX_PROBLEM_SIZE >> 2, MAX_PROBLEM_SIZE >> 1, MAX_PROBLEM_SIZE};
 
-   int n_problems = problem_sizes.size();
+    float *A = (float *)malloc(sizeof(float) * MAX_PROBLEM_SIZE);
 
-   /* For each test size */
-   for (int64_t n : problem_sizes) 
-   {
-      float t;
-      printf("Working on problem size N=%ld \n", n);
+    int n_problems = problem_sizes.size();
 
-      // invoke user code to set up the problem
-      setup(n, &A[0]);
+    /* For each test size */
+    for (int64_t n : problem_sizes) {
+        float t;
+        printf("Working on problem size N=%ld \n", n);
 
-      // insert your timer code here
+        // invoke user code to set up the problem
+        setup(n, &A[0]);
 
-      // invoke method to perform the sum
-      t = sum(n, &A[0]);
+        // insert your timer code here
 
-      // insert your end timer code here, and print out elapsed time for this problem size
+        // invoke method to perform the sum
+        t = sum(n, &A[0]);
 
-      printf(" Sum result = %lf \n",t);
+        // insert your end timer code here, and print out elapsed time for this
+        // problem size
 
-   } // end loop over problem sizes
+        printf(" Sum result = %lf \n", t);
+
+    } // end loop over problem sizes
 }
 
 // EOF
