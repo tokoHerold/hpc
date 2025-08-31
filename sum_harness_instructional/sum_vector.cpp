@@ -9,15 +9,16 @@
 #include "sums.h"
 
 void setup(int64_t N, float A[]) {
-	for (int i = 0; i < N; ++i) {
-		A[i] = (float) i;
-	}
+    printf(" inside sum_vector problem_setup, N=%ld \n", N);
+    for (int i = 0; i < N; ++i) {
+        A[i] = (float)i;
+    }
 }
 
 float sum(int64_t N, float A[]) {
-	float sum = 0;
-	for (int i = 0; i < N; ++i) {
-		sum += A[i];
-	}
+    float sum = 0;
+    for (int i = 0; i < N; ++i) {
+        sum += A[i];
+    }
     return sum;
 }
