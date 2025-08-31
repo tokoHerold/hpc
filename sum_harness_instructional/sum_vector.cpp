@@ -3,22 +3,21 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
-#include <vector>
 #include <string.h>
+#include <vector>
 
 #include "sums.h"
 
-void 
-setup(int64_t N, float A[])
-{
-   printf(" inside sum_vector problem_setup, N=%ld \n", N);
+void setup(int64_t N, float A[]) {
+	for (int i = 0; i < N; ++i) {
+		A[i] = (float) i;
+	}
 }
 
-float
-sum(int64_t N, float A[])
-{
-   printf(" inside sum_vector perform_sum, N=%ld \n", N);
-
-   return 0;
+float sum(int64_t N, float A[]) {
+	float sum = 0;
+	for (int i = 0; i < N; ++i) {
+		sum += A[i];
+	}
+    return sum;
 }
-
