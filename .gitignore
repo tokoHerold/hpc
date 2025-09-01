@@ -1,2 +1,6 @@
 # Ignore CMAKE build directories
 */build/*
+
+# Ignore data measurements
+*/data/*
+
