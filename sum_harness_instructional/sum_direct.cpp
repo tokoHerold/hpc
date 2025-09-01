@@ -9,7 +9,7 @@
 #include "sums.h"
 
 void setup(int64_t N, float A[]) {
-    printf(" inside direct_sum problem_setup, N=%ld \n", N);
+    // printf(" inside direct_sum problem_setup, N=%ld \n", N);
 }
 
 

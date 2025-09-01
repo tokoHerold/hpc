@@ -25,27 +25,37 @@ int main(int argc, char **argv) {
         MAX_PROBLEM_SIZE >> 5, MAX_PROBLEM_SIZE >> 4, MAX_PROBLEM_SIZE >> 3,
         MAX_PROBLEM_SIZE >> 2, MAX_PROBLEM_SIZE >> 1, MAX_PROBLEM_SIZE};
 
+#define ITERATIONS 1
+
     float *A = (float *)malloc(sizeof(float) * MAX_PROBLEM_SIZE);
 
-    int n_problems = problem_sizes.size();
+    // int n_problems = problem_sizes.size(); // unused variable
 
     /* For each test size */
     for (int64_t n : problem_sizes) {
         float t;
-        printf("Working on problem size N=%ld \n", n);
+        // printf("Working on problem size N=%ld \n", n);
 
         // invoke user code to set up the problem
         setup(n, &A[0]);
 
         // insert your timer code here
+        std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
+            std::chrono::high_resolution_clock::now();
 
         // invoke method to perform the sum
-        t = sum(n, &A[0]);
+		for (int i = 0; i < ITERATIONS; ++i) {
+			t = sum(n, &A[0]);
+		}
 
         // insert your end timer code here, and print out elapsed time for this
         // problem size
+		std::chrono::time_point<std::chrono::high_resolution_clock> end_time = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> elapsed = end_time - start_time;
 
-        printf(" Sum result = %lf \n", t);
+        // printf(" Sum result = %lf, time = %f \n", t, elapsed.count() / ITERATIONS);
+		// <Problem size>, <time>, <sum result>
+		printf("%ld, %f, %lf\n", n, elapsed.count() / ITERATIONS, t);
 
     } // end loop over problem sizes
 }

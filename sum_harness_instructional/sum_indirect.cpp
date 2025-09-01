@@ -11,7 +11,7 @@
 #include "sums.h"
 
 void setup(int64_t N, float A[]) {
-    printf(" inside sum_indirect problem_setup, N=%ld \n", N);
+    // printf(" inside sum_indirect problem_setup, N=%ld \n", N);
     for (int i = 0; i < N; ++i) {
         A[i] = (float)(lrand48() % N);
     }
