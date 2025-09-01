@@ -23,7 +23,7 @@ void setup(int64_t N, float A[]) {
  * Only works properly if the problem size is big enough.
  */
 float sum(int64_t N, float A[]) {
-	int64_t next = N - 1;  // Prevent libc call, use random number directly
+	int64_t next = N - 123;  // Prevent libc call, use random number directly
 	float sum = 0;
 	for (int i = 0; i < N; ++i) {
 		float tmp = A[next];

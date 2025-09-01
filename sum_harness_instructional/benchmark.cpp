@@ -60,6 +60,7 @@ int main(int argc, char **argv) {
 		}
 		// stop measurement
 		end_time = std::chrono::high_resolution_clock::now();
+		elapsed = end_time - start_time;
 
 		printf("%ld, %f, %lf\n", n, elapsed.count() / iterations, t);
 
