@@ -19,9 +19,9 @@ void setup(int64_t N, float A[]) {
 float sum(int64_t N, float A[]) {
 	// Remove printf statement
 	// printf(" inside direct_sum perform_sum, N=%ld \n", N);
-	float sum = 0;
+	float sum = 0.f;
 	for (int i = 0; i < N; ++i) {
-		sum += i;
+		sum += (float) i;
 	}
 	return sum;
 }

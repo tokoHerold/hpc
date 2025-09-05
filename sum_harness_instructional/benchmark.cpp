@@ -19,7 +19,6 @@
 #include "sums.h"
 
 #define MAX_PROBLEM_SIZE 1 << 28  //  256M
-#define RUNTIME 10.0
 
 /* The benchmarking program */
 int main(int argc, char **argv) {
@@ -31,38 +30,28 @@ int main(int argc, char **argv) {
 	float *A = (float *) malloc(sizeof(float) * MAX_PROBLEM_SIZE);
 
 	// int n_problems = problem_sizes.size(); // unused variable
+	printf("N,runtime,expected,result\n");
 
 	/* For each test size */
 	for (int64_t n : problem_sizes) {
+		float expected = ((float) n * ((float) n - 1.f)) / 2.f;
 		float t;
 		// printf("Working on problem size N=%ld \n", n);
 
 		// invoke user code to set up the problem
 		setup(n, &A[0]);
 
-		// Measure time for one run
-		std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
-			std::chrono::high_resolution_clock::now();
+		// Start time measurement
+		auto start_time = std::chrono::high_resolution_clock::now();
+
+		// invoke method to perform the sum
 		t = sum(n, &A[0]);
-		std::chrono::time_point<std::chrono::high_resolution_clock> end_time =
-			std::chrono::high_resolution_clock::now();
+
+		// stop measurement
+		auto end_time = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> elapsed = end_time - start_time;
 
-		// Number of  iteraions required to last RUNTIME seconds
-		int iterations = (int) std::ceil(RUNTIME / elapsed.count());
-
-		// == Actual Measurement ==
-		// Start time measurement
-		start_time = std::chrono::high_resolution_clock::now();
-		for (int i = 0; i < iterations; ++i) {
-			// invoke method to perform the sum
-			t = sum(n, &A[0]);
-		}
-		// stop measurement
-		end_time = std::chrono::high_resolution_clock::now();
-		elapsed = end_time - start_time;
-
-		printf("%ld, %f, %lf\n", n, elapsed.count() / iterations, t);
+		printf("%ld, %f, %f, %lf\n", n, elapsed.count(), expected, t);
 
 	}  // end loop over problem sizes
 }
