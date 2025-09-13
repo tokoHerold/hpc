@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.14)
 project(hw2 LANGUAGES C CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_TYPE "Release")
 
 find_package(BLAS REQUIRED)
+include_directories(/usr/include/openblas) # Required if using openblas
 
 # We require the GNU compiler for this assignment.
 if (NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
