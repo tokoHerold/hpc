@@ -4,3 +4,5 @@
 # Ignore data measurements
 */data/*
 
+# Ignore compile commands output
+compile_commands.json
