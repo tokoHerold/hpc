@@ -101,7 +101,6 @@ int main(int argc, char** argv) {
 			reference_dgemm(n, 1.0, Acopy, Bcopy, Ccopy);
 
 			// compare your C with that computed by BLAS
-			std::cerr << "Done" << std::endl;
 			if (check_accuracy(Ccopy, C, n * n) == false)
 				printf(" Error: your answer is not the same as that computed by BLAS. \n");
 
