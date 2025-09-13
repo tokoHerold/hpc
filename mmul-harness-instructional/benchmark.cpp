@@ -47,8 +47,13 @@ bool check_accuracy(double* A, double* Anot, int nvalues) {
 
 /* The benchmarking program */
 int main(int argc, char** argv) {
-	std::cerr << "Description:\t" << dgemm_desc << std::endl << std::endl;
+#ifndef BLOCKED
+	std::cout << "N,runtime" << std::endl;
+#else
+	std::cout << "N,runtime,block_size" << std::endl;
+#endif
 
+	std::cerr << "Description:\t" << dgemm_desc << std::endl << std::endl;
 	std::cerr << std::fixed << std::setprecision(2);
 
 	// 9/14/2024: run the 1st problem size twice: the first execution
@@ -89,6 +94,7 @@ int main(int argc, char** argv) {
 			memcpy((void*) Ccopy, (const void*) C, sizeof(double) * n * n);
 
 			// insert timer code here
+			auto start_time = std::chrono::high_resolution_clock::now();
 
 #ifdef BLOCKED
 			square_dgemm_blocked(n, b, A, B, C);
@@ -97,6 +103,15 @@ int main(int argc, char** argv) {
 #endif
 
 			// insert timer code here
+			auto end_time = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> elapsed = end_time - start_time;
+
+			// Print result
+#ifndef BLOCKED
+			std::cout << n << "," << elapsed.count() << std::endl;
+#else
+			std::cout << n << "," << elapsed.count() << "," << b << std::endl;
+#endif
 
 			reference_dgemm(n, 1.0, Acopy, Bcopy, Ccopy);
 
