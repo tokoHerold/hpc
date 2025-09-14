@@ -4,6 +4,14 @@ project(hw2 LANGUAGES C CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_TYPE "Release")
 
+# Check if account environment variable is set
+if(NOT DEFINED ENV{ACCOUNT})
+    message(WARNING "The ACCOUNT environment variable is not set.")
+else()
+	message(STATUS "Using '$ENV{ACCOUNT}' as account")
+	set(ACCOUNT $ENV{ACCOUNT})
+endif()
+
 find_package(BLAS REQUIRED)
 include_directories(/usr/include/openblas) # Required if using openblas
 
