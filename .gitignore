@@ -6,3 +6,9 @@
 
 # Ignore compile commands output
 compile_commands.json
+
+# Generated files
+*.png
+*.jpg
+*.pdf
+*.idx
