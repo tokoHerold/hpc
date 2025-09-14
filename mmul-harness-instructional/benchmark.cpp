@@ -23,6 +23,12 @@ extern void square_dgemm(int, double*, double*, double*);
 extern void square_dgemm_blocked(int, int, double*, double*, double*);
 extern const char* dgemm_desc;
 
+#ifdef BLOCKED
+double* row_tile_buffer;
+double* col_tile_buffer;
+double* tile_buffer;
+#endif
+
 void reference_dgemm(int n, double alpha, double* A, double* B, double* C) {
 	cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, n, n, n, alpha, A, n, B, n, 1., C, n);
 }
@@ -72,6 +78,9 @@ int main(int argc, char** argv) {
 #ifdef BLOCKED
 		std::cerr << "Blocked DGEMM" << std::endl;
 		for (int b : block_sizes) {
+			row_tile_buffer = new double[n * b];
+			col_tile_buffer = new double[n * b];
+			tile_buffer = new double[b * b];
 #endif
 
 			// allocate memory for 6 NxN matrics
@@ -110,7 +119,7 @@ int main(int argc, char** argv) {
 #ifndef BLOCKED
 			std::cout << n << "," << elapsed.count() << std::endl;
 #else
-			std::cout << n << "," << elapsed.count() << "," << b << std::endl;
+		std::cout << n << "," << elapsed.count() << "," << b << std::endl;
 #endif
 
 			reference_dgemm(n, 1.0, Acopy, Bcopy, Ccopy);
@@ -121,6 +130,9 @@ int main(int argc, char** argv) {
 
 #ifdef BLOCKED
 		}  // end loop over block sizes
+		delete row_tile_buffer;
+		delete col_tile_buffer;
+		delete tile_buffer;
 #endif
 
 	}  // end loop over problem sizes
