@@ -1,16 +1,16 @@
 #include <cstring>
 const char* dgemm_desc = "Blocked dgemm.";
 
-extern double* row_tile_buffer;  // dimension: block_size * n
-extern double* col_tile_buffer;  // dimension: n * block_size
-extern double* tile_buffer;      // dimension: block_size * block_size
-
 /* This routine performs a dgemm operation
  *  C := C + A * B
  * where A, B, and C are n-by-n matrices stored in row-major format.
  * On exit, A and B maintain their input values. */
 // void square_dgemm_blocked(int n, int block_size, double* __restrict A, double* __restrict B, double* __restrict C) {
 void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C) {
+	double* row_tile_buffer = new double[n * block_size];
+	double* col_tile_buffer = new double[n * block_size];
+	double* tile_buffer = new double[block_size * block_size];
+
 	for (int block_i = 0; block_i < n; block_i += block_size) {
 		// Copy optimization: Load A[block_i:block_i+block_size, 0:n] into buffer
 		memcpy(row_tile_buffer, &A[block_i * n], (size_t) block_size * n * sizeof(double));
@@ -46,5 +46,8 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
 			}
 		}
 	}
+		delete[] row_tile_buffer;
+		delete[] col_tile_buffer;
+		delete[] tile_buffer;
 }
 
