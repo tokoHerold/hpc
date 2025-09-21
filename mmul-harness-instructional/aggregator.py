@@ -22,4 +22,4 @@ for key in vars.groups.keys():
     blocked_blas[f"b = {key}"] = values
 
 blocked_blas["blas"] = input_dfs[2]["N"]**3 / input_dfs[2]["runtime"] / 10**6
-basic_blas.to_csv("data/mflops_blocked.csv", index=False)
+blocked_blas.to_csv("data/mflops_blocked.csv", index=False)
