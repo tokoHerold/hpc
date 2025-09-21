@@ -32,6 +32,6 @@ latency_df = pd.DataFrame()
 latency_df["N"] = input_dfs[0]["N"]
 
 latency_df["direct"] = [0.0] * len(input_dfs[0]["N"])
-latency_df["vector"] = input_dfs[1]["runtime"].clip(lower=0) / latency_df["N"] * 10e9
-latency_df["indirect"] = input_dfs[2]["runtime"].clip(lower=0) / latency_df["N"] * 10e9
+latency_df["vector"] = input_dfs[1]["runtime"].clip(lower=0) / latency_df["N"] * 1e9
+latency_df["indirect"] = input_dfs[2]["runtime"].clip(lower=0) / latency_df["N"] * 1e9
 latency_df.to_csv("data/latency.csv", index=False)
