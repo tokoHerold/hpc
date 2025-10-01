@@ -47,7 +47,7 @@ bool check_accuracy(double* A, double* Anot, int nvalues) {
 
 /* The benchmarking program */
 int main(int argc, char** argv) {
-	std::cout << "Description:\t" << dgemv_desc << std::endl << std::endl;
+	std::cerr << "Description:\t" << dgemv_desc << std::endl << std::endl;
 
 	std::cout << std::fixed << std::setprecision(5);
 
@@ -73,8 +73,9 @@ int main(int argc, char** argv) {
 
 	// load up matrics with some random numbers
 	/* For each test size */
+	std::cout << "N,t" << std::endl;
 	for (int n : test_sizes) {
-		printf("Working on problem size N=%d \n", n);
+		std::cerr << "Working on problem size N=" << n << std::endl;
 
 		fill(A, n * n);
 		fill(X, n);
@@ -87,22 +88,22 @@ int main(int argc, char** argv) {
 
 		// insert start timer code here
 
-			auto start_time = std::chrono::high_resolution_clock::now();
+		auto start_time = std::chrono::high_resolution_clock::now();
 		// call the method to do the work
 		my_dgemv(n, A, X, Y);
 
 		// insert end timer code here, and print out the elapsed time for this problem size
 
-			auto end_time = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double> elapsed = end_time - start_time;
-			std::cout << n << "," << elapsed.count() << std::endl;
+		auto end_time = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> elapsed = end_time - start_time;
+		std::cout << n << "," << elapsed.count() << std::endl;
 		// now invoke the cblas method to compute the matrix-vector multiplye
 		reference_dgemv(n, Acopy, Xcopy, Ycopy);
 
 		std::cerr << "Verifying..." << std::endl;
 		// compare your result with that computed by BLAS
 		if (check_accuracy(Ycopy, Y, n) == false)
-			printf(" Error: your answer is not the same as that computed by BLAS. \n");
+			std::cerr << " Error: your answer is not the same as that computed by BLAS. \n" << std::endl;
 		else
 			std::cerr << "Correct" << std::endl;
 
