@@ -27,7 +27,7 @@ export OMP_PROC_BIND=spread
 # make use of the OMP_SCHEDULE environment variable to set the thread scheduling 
 # algorithm. 
 # the default scheduling algorithm is static
-# export OMP_SCHEDULE=static
+export OMP_SCHEDULE=static
 # export OMP_SCHEDULE=dynamic
 
 for t in 1 4 16 64
