@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 project(hw2 LANGUAGES C CXX)
 
 set(CMAKE_BUILD_TYPE "Release")
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 find_package(BLAS REQUIRED)
+include_directories(/usr/include/openblas)
 find_package(LIKWID QUIET)
 
 # use cmake --log-level=debug to see DEBUG messages
@@ -55,7 +57,7 @@ endif ()
 target_compile_features(benchmark-blas PRIVATE c_std_11 c_restrict)
 target_compile_options(benchmark-blas PRIVATE -Wall -pedantic -march=native)
 set(BENCHMARK "blas")
-configure_file(job.in job-${BENCHMARK})
+configure_file(job-blas.in job-${BENCHMARK})
 
 add_executable(benchmark-blocked-omp dgemm-blocked-omp.cpp)
 add_library(bench-blocked-omp OBJECT benchmark.cpp)
@@ -72,6 +74,6 @@ if ( LIKWID_FOUND )
 endif ()
 target_compile_options(benchmark-blocked-omp PRIVATE -fopenmp -Wall -pedantic -march=native)
 set(BENCHMARK "blocked-omp")
-configure_file(job.in job-${BENCHMARK})
+configure_file(job-blocked-omp.in job-${BENCHMARK})
 
 # eof
