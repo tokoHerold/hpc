@@ -15,7 +15,6 @@
 // then the benchmark will iterate of a prescribed set of block sizes, which are
 // defined in the code below.
 
-#include <algorithm>
 #include <chrono>
 #include <iomanip>
 #include <iostream>
