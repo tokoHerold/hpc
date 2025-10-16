@@ -22,7 +22,7 @@ export OMP_PROC_BIND=spread
 
 # use PERF_COUNTER_GROUP to tell likwif-perfctr which perf counter group to monitor
 # the default here, FLOPS_DP, counts the number of double-precisions FLOPS
-export PERF_COUNTER_GROUP=FLOPS_DP
+export PERF_COUNTER_GROUP=@METRIC@
 
 # use the MARKER_FLAG variable to activate LIKWID's marker API, which will result in 
 # perf counter data being collected only in the region of code surrounded by marker start/stop
