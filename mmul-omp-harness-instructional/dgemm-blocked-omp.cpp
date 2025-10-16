@@ -18,6 +18,9 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
 		double* col_tile_buffer = new double[block_size * block_size];
 		double* tile_buffer = new double[block_size * block_size];
 
+#ifdef LIKWID_PERFMON
+		LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
+#endif
 		#pragma omp for collapse(2)
 		for (int block_i = 0; block_i < n; block_i += block_size) {
 			for (int block_j = 0; block_j < n; block_j += block_size) {
@@ -57,6 +60,9 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
 				}
 			}
 		}
+#ifdef LIKWID_PERFMON
+		LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME);
+#endif
 		delete[] row_tile_buffer;
 		delete[] col_tile_buffer;
 		delete[] tile_buffer;
