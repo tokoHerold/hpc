@@ -14,6 +14,7 @@ def plot(
         logscale="",
         log_base_x=10.0,
         log_base_y=10.0,
+        x_coords=None
         ):
     """
     Generates and saves a plot from a pandas DataFrame.
@@ -35,15 +36,17 @@ def plot(
         log_base_x (int, optional): The base for the logarithmic x-axis. Defaults to 2.
         log_base_y (int, optional): The base for the logarithmic y-axis. Defaults to 10.
         legend_prefix (str, optional): A prefix to add to each legend entry. Defaults to "".
+        x_cords (list[int], optional): Spacing for ticks on the x-axis.
     """
+    print(f"-= Plotting {title.split("\n")[0]} =-")
     print(df)
 
     var_names = list(df.columns)
-    print("var names =", var_names)
+    print("Detected series: ", [f"{legend_prefix}{x}" for x in var_names])
 
     # Split the df into individual vars
     # problem_sizes = df[var_names[0]].values.tolist()
-    problem_sizes = df.index.tolist()
+    x_labels = df.index.tolist()
 
     # Prepare metrics for all columns except the first one
     metrics = [(df[var_names[i]] * ymodifier).values.tolist() for i in range(len(var_names))]
@@ -51,8 +54,8 @@ def plot(
     plt.figure()
     plt.title(title)
 
-    xlocs = [i for i in range(len(problem_sizes))]
-    plt.xticks(xlocs, [f"${problem_size}$" for problem_size in problem_sizes])
+    xlocs = x_coords if x_coords is not None else [i for i in range(len(x_labels))]
+    plt.xticks(xlocs, [f"${problem_size}$" for problem_size in x_labels])
 
     # Define a list of markers to use
     markers = ['o', 'x', '^', 's', 'D', '*', 'P', 'H']
@@ -60,7 +63,7 @@ def plot(
 
     # Plot each metric with a different marker
     for i, metric in enumerate(metrics):
-        plt.plot(metric, marker=next(marker_cycle), label=f"{legend_prefix}{var_names[i]}")
+        plt.plot(xlocs, metric, marker=next(marker_cycle), label=f"{legend_prefix}{var_names[i]}")
 
     if 'y' in logscale:
         plt.yscale("log", base=log_base_y)
@@ -104,5 +107,6 @@ plot("Speedup of Basic vs. LibSci BLAS DGEMM:\nPerlmutter CPU Node, -O3, -march=
      "basic_speedup.pdf",
      "Problem Size (n)",
      "Speedup",
-     legend_prefix='p='
+     legend_prefix='p=',
+     x_coords=[0, 1, 3],
      )
