@@ -21,11 +21,13 @@ void square_dgemm(int n, double* A, double* B, double* C) {
 		for (int row = 0; row < n; ++row) {
 			for (int col = 0; col < n; ++col) {
 				int idx_c = row * n + col;
+				double c = C[idx_c]; // Compiler does not do it :(
 				for (int i = 0; i < n; ++i) {
 					int idx_a = row * n + i;
 					int idx_b = i * n + col;
-					C[idx_c] += A[idx_a] * B[idx_b];
+					c += A[idx_a] * B[idx_b];
 				}
+				C[idx_c] = c;
 			}
 		}
 #ifdef LIKWID_PERFMON
