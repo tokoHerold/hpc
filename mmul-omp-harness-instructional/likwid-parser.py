@@ -22,9 +22,9 @@ RUN_COMMAND = 'Run Command'
 
 # --- Input File paths ---
 files_to_parse = [
-    "data/raw/basic_flops_dp.out",
-    "data/raw/basic_l2cache.out",
-    "data/raw/basic_l3cache.out",
+    "data/raw/basic-flops_dp.out",
+    "data/raw/basic-l2cache.out",
+    "data/raw/basic-l3cache.out",
     "data/raw/blas-flops_dp.out",
     "data/raw/blas-l2cache.out",
     "data/raw/blas-l3cache.out",
