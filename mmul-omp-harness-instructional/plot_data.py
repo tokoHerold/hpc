@@ -128,7 +128,6 @@ plot("Speedup of Basic OMP vs Sequential DGEMM:\nPerlmutter CPU Node, -O3, -marc
      "Problem Size (n)",
      "Speedup",
      legend_prefix='p=',
-     x_coords=[0, 1, 3],
      )
 
 
@@ -153,5 +152,4 @@ plot("Speedup of Blocked OMP vs Sequential DGEMM:\nPerlmutter CPU Node, -O3, -ma
      "Problem Size (n)",
      "Speedup",
      legend_prefix=['b=4, p=', 'b=16, p='],
-     x_coords=[0, 1, 3],
      )
