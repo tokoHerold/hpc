@@ -56,6 +56,7 @@ ax.set_ylabel('Threads per block')
 ax.set_xlabel('Block Sizes')
 fig.colorbar(im, ax=ax)
 fig.tight_layout()
+plt.savefig("heatmap.pdf", format='pdf')
 plt.show()
 
 # EOF
