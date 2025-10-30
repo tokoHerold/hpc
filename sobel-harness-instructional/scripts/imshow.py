@@ -28,7 +28,6 @@ srcImg=srcImg.reshape([rows, cols])
 
 #print(" after reshape, array shapw is" , np.shape(srcImg))
 plt.imshow(srcImg, cmap="gray", vmin=0, vmax=255)
-plt.savefig("image.jpg", format='jpg')
 plt.show()
 
 # EOF

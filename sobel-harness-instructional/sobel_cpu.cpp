@@ -93,9 +93,9 @@ void do_sobel_filtering(float *in, float *out, int ncols, int nrows) {
 int main(int ac, char *av[]) {
 	// filenames, etc, hard coded at the top of the file
 	// load input data
-	   char input_fname[]="../data/zebra-gray-int8";
-	   int data_dims[2] = {3556, 2573};
-	   char output_fname[] = "../data/processed-raw-int8-cpu.dat";
+//	   char input_fname[]="../data/zebra-gray-int8";
+//	   int data_dims[2] = {3556, 2573};
+//	   char output_fname[] = "../data/processed-raw-int8-cpu.dat";
 
 	off_t nvalues = data_dims[0] * data_dims[1];
 	unsigned char *in_data_bytes = (unsigned char *) malloc(sizeof(unsigned char) * nvalues);
