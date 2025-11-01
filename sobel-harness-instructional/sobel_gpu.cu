@@ -58,12 +58,23 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort =
 // see https://en.wikipedia.org/wiki/Sobel_operator
 //
 __device__ float sobel_filtered_pixel(float *s, int i, int j, int ncols, int nrows, float *gx, float *gy) {
-	float t = 0.0;
+	float a = 0.0;
+	float b = 0.0;
+	int sobel_idx = 0;
 
-	// ADD CODE HERE:  add your code here for computing the sobel stencil computation at location (i,j)
-	// of input s, returning a float
+	if (i == 0 || j == 0 || i == ncols - 1 || j == nrows - 1) {
+		return 0.f;
+	}
 
-	return t;
+	for (int row = j - 1; row < j + 2; row++) {
+		for (int col = i - 1; col < i + 2; col++) {
+			float val = s[row * ncols + col];
+			a += val * gx[sobel_idx];
+			b += val * gy[sobel_idx];
+			sobel_idx++;
+		}
+	}
+	return fminf(sqrtf(a * a + b * b), 1.f);
 }
 
 //
@@ -88,12 +99,20 @@ __global__ void sobel_kernel_gpu(float *s,  // source image pixels
 {
 	// ADD CODE HERE: insert your code here that iterates over every (i,j) of input,  makes a call
 	// to sobel_filtered_pixel, and assigns the resulting value at location (i,j) in the output.
+	int tid = blockIdx.x * blockDim.x + threadIdx.x;
+  int stride = blockDim.x * gridDim.x;
+	for (int i = tid; i < n; i += stride) {
+		d[i] = sobel_filtered_pixel(s, i % ncols, i / ncols, ncols, nrows, gx, gy);
+	}
 
 	// because this is CUDA, you need to use CUDA built-in variables to compute an index and stride
 	// your processing motif will be very similar here to that we used for vector add in Lab #2
 }
 
-int main(int ac, char *av[]) {
+	__constant__ float device_gx[9] = {1.0, 0.0, -1.0, 2.0, 0.0, -2.0, 1.0, 0.0, -1.0};
+	__constant__ float device_gy[9] = {1.0, 2.0, 1.0, 0.0, 0.0, 0.0, -1.0, -2.0, -1.0};
+
+int main(int argc, char *argv[]) {
 	// input, output file names hard coded at top of file
 
 	// load the input file
@@ -123,30 +142,44 @@ int main(int ac, char *av[]) {
 	for (int i = 0; i < nvalues; i++) out_data_floats[i] = 1.0;  // assign "white" to all output values for debug
 
 	// define sobel filter weights, copy to a device accessible buffer
-	float Gx[9] = {1.0, 0.0, -1.0, 2.0, 0.0, -2.0, 1.0, 0.0, -1.0};
-	float Gy[9] = {1.0, 2.0, 1.0, 0.0, 0.0, 0.0, -1.0, -2.0, -1.0};
-	float *device_gx, *device_gy;
-	gpuErrchk(cudaMallocManaged(&device_gx, sizeof(float) * sizeof(Gx)));
-	gpuErrchk(cudaMallocManaged(&device_gy, sizeof(float) * sizeof(Gy)));
+	/* float Gx[9] = {1.0, 0.0, -1.0, 2.0, 0.0, -2.0, 1.0, 0.0, -1.0}; */
+	/* float Gy[9] = {1.0, 2.0, 1.0, 0.0, 0.0, 0.0, -1.0, -2.0, -1.0}; */
+	/* float *device_gx, *device_gy; */
+	/* gpuErrchk(cudaMallocManaged(&device_gx, sizeof(float) * sizeof(Gx))); */
+	/* gpuErrchk(cudaMallocManaged(&device_gy, sizeof(float) * sizeof(Gy))); */
 
-	for (int i = 0; i < 9; i++)  // copy from Gx/Gy to device_gx/device_gy
-	{
-		device_gx[i] = Gx[i];
-		device_gy[i] = Gy[i];
-	}
+	/* for (int i = 0; i < 9; i++)  // copy from Gx/Gy to device_gx/device_gy */
+	/* { */
+	/* 	device_gx[i] = Gx[i]; */
+	/* 	device_gy[i] = Gy[i]; */
+	/* } */
+	/* float *device_gx = Gx; */
+	/* float *device_gy = Gy; */
 
 	// now, induce memory movement to the GPU of the data in unified memory buffers
 
 	int deviceID = 0;  // assume GPU#0, always. OK assumption for this program
 	cudaMemPrefetchAsync((void *) in_data_floats, nvalues * sizeof(float), deviceID);
 	cudaMemPrefetchAsync((void *) out_data_floats, nvalues * sizeof(float), deviceID);
-	cudaMemPrefetchAsync((void *) device_gx, sizeof(Gx) * sizeof(float), deviceID);
-	cudaMemPrefetchAsync((void *) device_gy, sizeof(Gy) * sizeof(float), deviceID);
+	/* cudaMemPrefetchAsync((void *) device_gx, sizeof(Gx) * sizeof(float), deviceID); */
+	/* cudaMemPrefetchAsync((void *) device_gy, sizeof(Gy) * sizeof(float), deviceID); */
 
 	// set up to run the kernel
 	int nBlocks = 1, nThreadsPerBlock = 256;
 
 	// ADD CODE HERE: insert your code here to set a different number of thread blocks or # of threads per block
+	int c;
+   while ( (c = getopt(argc, argv, "N:B:")) != -1) {
+      switch(c) {
+         case 'N':
+            nThreadsPerBlock = std::atoi(optarg == NULL ? "256" : optarg);
+            break;
+         case 'B':
+            nBlocks = std::atoi(optarg == NULL ? "1" : optarg);
+            break;
+      }
+   }
+	
 
 	printf(" GPU configuration: %d blocks, %d threads per block \n", nBlocks, nThreadsPerBlock);
 
